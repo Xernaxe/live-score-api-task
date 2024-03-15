@@ -1,4 +1,4 @@
-type TypeCompetition = {
+export type TypeCompetition = {
 	has_groups: boolean;
 	name: string;
 	tier: number;
@@ -9,14 +9,14 @@ type TypeCompetition = {
 	active: boolean;
 }
 
-type TypeTeam = {
+export type TypeTeam = {
 	name: string;
 	country_id: number | null;
 	id: number;
 	stadium: string;
 }
 
-type TypeScores = {
+export type TypeScores = {
 	score: string;
 	ht_score: string;
 	ft_score: string;
