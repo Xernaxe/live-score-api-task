@@ -1,8 +1,8 @@
 import React from 'react';
-import { IFilterOptions } from '../_types/IFilterOptions';
+import { FilterOptions } from '../_types/FilterOptions';
 
 interface FilterProps {
-	filterOptions: IFilterOptions[] | undefined;
+	filterOptions: FilterOptions[] | undefined;
 	searchParams: URLSearchParams;
 	setSearchParams: (params: URLSearchParams) => void;
 }

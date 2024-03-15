@@ -1,25 +1,25 @@
-import { IMatchData } from '../_types/IMatchData';
+import { Match } from '../_types/Match';
 
-const DataToDisplay = ({
+const Matches = ({
 	matches,
 	scoreChangedList,
 }: {
-	matches: IMatchData[];
+	matches: Match[];
 	scoreChangedList: number[];
 }) => {
 	return (
 		<div className='w-3/4 m-auto flex flex-col gap-4'>
-			{matches.map((match: IMatchData) => {
+			{matches.map((match: Match) => {
 				return (
-					<div className=' bg-slate-800 rounded p-2' key={match.id}>
-						<div className='flex justify-between'>
-							<div className=''>
-								<p>{match.competition.name}</p>
-								<p>At: {match.scheduled}</p>
+					<div className=' bg-slate-800 rounded pb-2' key={match.id}>
+						<div className='flex justify-between p-2 bg-black'>
+							<div className='flex gap-4'>
+								<p>Competition: {match.competition.name}</p>
+								<p>Scheduled at: {match.scheduled}</p>
 							</div>
-							<p>{match.time}'</p>
+							<p>Game time: {match.time}</p>
 						</div>
-						<div className='flex gap-8 '>
+						<div className='flex gap-8 my-4'>
 							<div className='flex gap-4 w-full justify-center'>
 								<p className='w-2/4 text-right'>{match.home.name}</p>
 
@@ -44,4 +44,4 @@ const DataToDisplay = ({
 	);
 };
 
-export default DataToDisplay;
+export default Matches;

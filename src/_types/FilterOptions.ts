@@ -1,4 +1,4 @@
-export type IFilterOptions = {
+export type FilterOptions = {
     ids: number[]
     name: string
 }

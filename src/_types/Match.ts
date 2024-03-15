@@ -1,4 +1,4 @@
-interface ICompetition {
+type TypeCompetition = {
 	has_groups: boolean;
 	name: string;
 	tier: number;
@@ -9,14 +9,14 @@ interface ICompetition {
 	active: boolean;
 }
 
-interface ITeam {
+type TypeTeam = {
 	name: string;
 	country_id: number | null;
 	id: number;
 	stadium: string;
 }
 
-interface IScores {
+type TypeScores = {
 	score: string;
 	ht_score: string;
 	ft_score: string;
@@ -24,22 +24,22 @@ interface IScores {
 	ps_score: string;
 }
 
-export interface IMatchData {
+export type Match = {
 	scheduled: string;
-	competition: ICompetition;
+	competition: TypeCompetition;
 	time: string;
 	last_changed: string;
 	fixture_id: number;
 	status: string;
-	home: ITeam;
+	home: TypeTeam;
 	added: string;
 	id: number;
 	country: string | null;
 	location: string;
-	away: ITeam;
+	away: TypeTeam;
 	federation: {
 		name: string;
 		id: number;
 	};
-	scores: IScores;
+	scores: TypeScores;
 }
