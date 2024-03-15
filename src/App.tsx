@@ -51,7 +51,7 @@ function App() {
 			}
 		});
 		setCompetitionsFilter([
-			{ name: 'Choose a competition', ids: [0] },
+			{ name: 'Choose a competition', ids: [] },
 			...uniqueCompetitions,
 		]);
 		console.log(competitionsFilter);
