@@ -1,8 +1,12 @@
 import { Match } from '../_types/Match';
 
-const API_KEY = import.meta.env.VITE_LIVE_SCORE_API_KEY || import.meta.env.VITE_VERCEL_LIVE_SCORE_API_KEY;
-const API_SECRET = import.meta.env.VITE_LIVE_SCORE_API_SECRET || import.meta.env.VITE_VERCEL_LIVE_SCORE_API_SECRET;
-const API_URL = 'http://livescore-api.com/api-client/matches/live.json?';
+const API_KEY =
+	import.meta.env.VITE_LIVE_SCORE_API_KEY ||
+	import.meta.env.VITE_VERCEL_LIVE_SCORE_API_KEY;
+const API_SECRET =
+	import.meta.env.VITE_LIVE_SCORE_API_SECRET ||
+	import.meta.env.VITE_VERCEL_LIVE_SCORE_API_SECRET;
+const API_URL = 'https://livescore-api.com/api-client/matches/live.json?';
 export const getMatches = async (
 	searchParams: URLSearchParams = new URLSearchParams()
 ) => {
