@@ -26,7 +26,9 @@ const DataToDisplay = ({
 								<div className=''>
 									<p
 										className={`min-w-12 text-center ${
-											scoreChangedList.includes(match.id) ? 'text-red-950' : ''
+											scoreChangedList.includes(match.id)
+												? 'text-green-950 text-2xl'
+												: ''
 										}`}
 									>
 										{match.scores.score}
