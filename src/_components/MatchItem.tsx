@@ -1,4 +1,3 @@
-import React from 'react';
 import { TypeCompetition, TypeScores, TypeTeam } from '../_types/Match';
 import { twMerge } from 'tailwind-merge';
 
