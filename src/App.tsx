@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import { getMatches } from './_actions/matches';
 import { Match } from './_types/Match';
@@ -11,12 +11,28 @@ function App() {
 	const [matches, setMatches] = useState<Match[] | null>(null);
 	const [scoreChangedList, setScoreChangedList] = useState<number[]>([]);
 	const [searchParams, setSearchParams] = useSearchParams();
-	const [filters, setFilters] =
-		useState<FilterOptions[]>();
+	const [filters, setFilters] = useState<FilterOptions[]>();
 
-	const interval = useRef<NodeJS.Timeout>();
+	const updateMatchesState = async () => {
+		const fetchedMatches = await getMatches(searchParams);
+		const updatedScoreChangedList: number[] = [];
 
-	const updateFiltersState = useCallback(async () => {
+		matches?.forEach((match) => {
+			const fetchedMatch = fetchedMatches?.find((m) => m.id === match.id);
+			if (fetchedMatch && match.scores.score !== fetchedMatch.scores.score) {
+				updatedScoreChangedList.push(match.id);
+			}
+		});
+		fetchedMatches?.sort((a, b) => {
+			if (a.status === 'FINISHED' && b.status !== 'FINISHED') return 1;
+			else if (a.status !== 'FINISHED' && b.status === 'FINISHED') return -1;
+			return 0;
+		});
+		setMatches(fetchedMatches as Match[]);
+		setScoreChangedList(updatedScoreChangedList);
+	};
+
+	const updateFiltersState = async () => {
 		const fetchedFilters = await getMatches();
 		const uniqueCompetitions: FilterOptions[] = [];
 
@@ -37,40 +53,19 @@ function App() {
 			{ name: 'Choose a competition', ids: [] },
 			...uniqueCompetitions,
 		]);
-	}, []);
-
-	const updateMatchesState = useCallback(
-		async (params: URLSearchParams) => {
-			const fetchedMatches = await getMatches(params);
-			const updatedScoreChangedList: number[] = [];
-
-			matches?.forEach((match) => {
-				const fetchedMatch = fetchedMatches?.find((m) => m.id === match.id);
-				if (fetchedMatch && match.scores.score !== fetchedMatch.scores.score) {
-					updatedScoreChangedList.push(match.id);
-				}
-			});
-			fetchedMatches?.sort((a, b) => {
-				if (a.status === 'FINISHED' && b.status !== 'FINISHED') return 1;
-				else if (a.status !== 'FINISHED' && b.status === 'FINISHED') return -1;
-				return 0;
-			});
-			setMatches(fetchedMatches as Match[]);
-			setScoreChangedList(updatedScoreChangedList);
-
-			updateFiltersState();
-		},
-		[matches, updateFiltersState]
-	);
+	};
 
 	useEffect(() => {
-		updateMatchesState(searchParams);
-		interval.current = setInterval(() => {
-			updateMatchesState(searchParams);
+		const interval = setTimeout(() => {
+			updateMatchesState();
 		}, 10000);
+		return () => clearTimeout(interval);
+	}, [matches]);
 
-		return () => clearTimeout(interval.current);
-	}, []);
+	useEffect(() => {
+		updateMatchesState();
+		updateFiltersState();
+	}, [searchParams]);
 
 	return (
 		<>
@@ -79,21 +74,9 @@ function App() {
 					<Filter
 						filterOptions={filters}
 						searchParams={searchParams}
-						setSearchParams={(value) => {
-							if (interval.current) clearInterval(interval.current);
-							updateMatchesState(value);
-							interval.current = setInterval(() => {
-								console.log('update matches state');
-								updateMatchesState(value);
-							}, 10000);
-
-							setSearchParams(value);
-						}}
+						setSearchParams={setSearchParams}
 					/>
-					<Matches
-						matches={matches}
-						scoreChangedList={scoreChangedList}
-					/>
+					<Matches matches={matches} scoreChangedList={scoreChangedList} />
 				</>
 			) : (
 				<div> Loading...</div>
